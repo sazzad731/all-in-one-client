@@ -14,7 +14,7 @@ const Service = () => {
       
       try
       {
-        const response = await fetch("https://all-in-one-server.vercel.app/services3");
+        const response = await fetch("http://localhost:3000/services3");
         const data = await response.json();
         setServices(data);
       } catch (err) {

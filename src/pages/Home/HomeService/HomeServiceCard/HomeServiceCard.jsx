@@ -16,7 +16,7 @@ const HomeServiceCard = ({item}) => {
           <p>{description}</p>
           <p className="font-medium text-xl">Price: ${price.toFixed(2)}</p>
           <div className="card-actions justify-end">
-            <Link to={`service-details/${_id}`}>
+            <Link to={`/service-details/${_id}`}>
               <button className="btn btn-primary">View details</button>
             </Link>
           </div>
