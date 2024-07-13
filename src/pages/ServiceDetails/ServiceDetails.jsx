@@ -30,7 +30,7 @@ const ServiceDetails = () => {
   const { Title, about, img, price, review, rating, facilities, _id } =
     serviceDetail;
   return (
-    <div className="mb-14 px-3 xl:px-0">
+    <div className="mb-20 px-3 xl:px-0">
       <div className="flex flex-col-reverse xl:flex-row justify-between gap-10 border-y-2 py-10 mb-16">
         <div className="xl:w-1/2">
           <h2 className="text-4xl font-semibold mb-5">{Title}</h2>
@@ -43,7 +43,7 @@ const ServiceDetails = () => {
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center mb-5">
             <Ratings ratings={rating} />
             <p className="ms-5">({review?.length}) customer reviews</p>
           </div>
