@@ -1,5 +1,8 @@
-const AddReview = ({id}) => {
-  
+import { useContext } from "react";
+import { ReviewContext } from "../../Context/ReviewProvider";
+
+const AddReview = () => {
+  const { serviceId, setAddedReview } = useContext(ReviewContext);
   const handleReviewSubmit = (event)=>{
     event.preventDefault();
     const form = event.target;
@@ -11,18 +14,19 @@ const AddReview = ({id}) => {
     const imageUrl = form.imageUrl.value;
     const reviewDescription = form.reviewDescription.value;
     
-    const reviewData = { name, email, occupation, ratings, reviewTitle, imageUrl, reviewDescription };
+    const reviewData = { serviceId, name, email, occupation, ratings, reviewTitle, imageUrl, reviewDescription };
 
     const addReviewinDatabase = async()=>{
       try{
-        const response = await fetch(`http://localhost:3000/addReview/${id}`, {
-          method: "PUT",
+        const response = await fetch(`http://localhost:3000/addReview`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(reviewData)
         })
-      const data = await response.json();
+        const data = await response.json();
+        setAddedReview(true)
       console.log(data);
       }catch(err){
         console.log(err)
@@ -88,9 +92,8 @@ const AddReview = ({id}) => {
               <input
                 type="number"
                 name="rating"
-                placeholder="Type here"
-                max={5.0}
-                min={0.0}
+                placeholder="Type from 0.0 to 5.0"
+                pattern="[0.0-5.0]"
                 className="input input-bordered w-full"
               />
             </label>
@@ -145,7 +148,7 @@ const AddReview = ({id}) => {
 
         <form method="dialog">
           {/* if there is a button, it will close the modal */}
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle text-xl btn-ghost absolute right-5 top-5">
             ✕
           </button>
         </form>

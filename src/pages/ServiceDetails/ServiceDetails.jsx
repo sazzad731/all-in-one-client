@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import Reviews from "./Reviews/Reviews";
 import Ratings from "./Ratings/Ratings";
+import { ReviewContext } from "../../Context/ReviewProvider";
 
 const ServiceDetails = () => {
   const { id } = useParams();
   const [ serviceDetail, setServiceDetail ] = useState({});
   const [ error, setError ] = useState();
   const [ isLoading, setLoading ] = useState(false);
+  const { reviews, setReview, setServiceId, addedReview } =
+    useContext(ReviewContext);
   useEffect(()=>{
-    const fetchedService = async()=>{
+    // Get selected Service Detail
+    const fetchedService = async () =>
+    {
       setLoading(true);
       try{
         const response = await fetch(
@@ -25,10 +30,29 @@ const ServiceDetails = () => {
       }
     }
     fetchedService()
+
+    
   }, [ id ])
-  console.log(serviceDetail)
-  const { Title, about, img, price, review, rating, facilities, _id } =
-    serviceDetail;
+
+  useEffect(() => {
+    // get reviews for specific service from server side
+    const fetchedReviews = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:3000/getReview/${id}`);
+        const data = await response.json();
+        setReview(data);
+        setServiceId(id);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchedReviews();
+  }, [id, setServiceId, setReview, addedReview]);
+
+  const { Title, about, img, price, rating, facilities, } = serviceDetail;
   return (
     <div className="mb-20 px-3 xl:px-0">
       <div className="flex flex-col-reverse xl:flex-row justify-between gap-10 border-y-2 py-10 mb-16">
@@ -45,7 +69,7 @@ const ServiceDetails = () => {
           </div>
           <div className="flex items-center mb-5">
             <Ratings ratings={rating} />
-            <p className="ms-5">({review?.length}) customer reviews</p>
+            <p className="ms-5">({reviews?.length}) customer reviews</p>
           </div>
           <p className="text-lg font-semibold mb-16">
             Price: ${price?.toFixed(2)}
@@ -58,7 +82,7 @@ const ServiceDetails = () => {
           <img src={img} alt={Title} />
         </div>
       </div>
-      <Reviews reviews={review} id={_id} />
+      <Reviews />
     </div>
   );
 };

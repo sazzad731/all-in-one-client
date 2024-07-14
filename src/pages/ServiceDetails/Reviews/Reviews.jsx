@@ -1,7 +1,10 @@
 import SingleUserReview from "./SingleUserReview/SingleUserReview";
 import AddReview from "../../AddReview/AddReview";
+import { useContext } from "react";
+import { ReviewContext } from "../../../Context/ReviewProvider";
 
-const Reviews = ({ reviews, id }) => {
+const Reviews = () => {
+  const { reviews } = useContext(ReviewContext);
   return (
     <div>
       <div className="flex items-center justify-between mb-10">
@@ -13,7 +16,7 @@ const Reviews = ({ reviews, id }) => {
           + Add Review
         </button>
       </div>
-      <AddReview id={id} />
+      <AddReview />
       {
         reviews?.length === 0 ? <h5 className="text-center text-xl font-medium">Please add a review</h5> :<div>
         <table className="table">
@@ -27,7 +30,7 @@ const Reviews = ({ reviews, id }) => {
           </thead>
           <tbody>
             {
-              reviews?.map(review=><SingleUserReview key={review.email} reviews={review} />)
+              reviews?.map(review=><SingleUserReview key={review._id} reviews={review} />)
             }
           </tbody>
         </table>
