@@ -10,8 +10,7 @@ const ServiceDetails = () => {
   const [ serviceDetail, setServiceDetail ] = useState({});
   const [ error, setError ] = useState();
   const [ isLoading, setLoading ] = useState(false);
-  const { reviews, setReview, setServiceId, addedReview } =
-    useContext(ReviewContext);
+  const { reviews, setReview, setServiceId, addedReview } = useContext(ReviewContext);
   useEffect(()=>{
     // Get selected Service Detail
     const fetchedService = async () =>
@@ -52,7 +51,13 @@ const ServiceDetails = () => {
     fetchedReviews();
   }, [id, setServiceId, setReview, addedReview]);
 
-  const { Title, about, img, price, rating, facilities, } = serviceDetail;
+  const { Title, about, img, price, facilities } = serviceDetail;
+
+  // calculate number of rating
+  let rating = 0;
+  for (let i = 0; i < reviews?.length; i++){
+    rating = (rating + parseFloat(reviews[i].ratings));
+  }
   return (
     <div className="mb-20 px-3 xl:px-0">
       <div className="flex flex-col-reverse xl:flex-row justify-between gap-10 border-y-2 py-10 mb-16">
@@ -68,7 +73,8 @@ const ServiceDetails = () => {
             ))}
           </div>
           <div className="flex items-center mb-5">
-            <Ratings ratings={rating} />
+            <Ratings ratings={rating / reviews?.length} />
+
             <p className="ms-5">({reviews?.length}) customer reviews</p>
           </div>
           <p className="text-lg font-semibold mb-16">

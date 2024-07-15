@@ -1,9 +1,9 @@
-import { createBrowserRouter, useParams } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Index from "../layout/Index";
 import Home from "../pages/Home/Home";
 import Services from "../pages/Services/Services";
 import ServiceDetails from "../pages/ServiceDetails/ServiceDetails";
-import AddReview from "../pages/AddReview/AddReview";
+import SignIn from "../pages/SignIn/SignIn";
 
 export const router = createBrowserRouter([
   {
@@ -19,9 +19,13 @@ export const router = createBrowserRouter([
         element: <Services />,
       },
       {
-        path: "service-details/:id",
+        path: "/service-details/:id",
         element: <ServiceDetails />,
       },
+      {
+        path: "/signin",
+        element: <SignIn/>
+      }
     ],
   },
 ]);

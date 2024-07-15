@@ -1,7 +1,6 @@
 import Ratings from "../../Ratings/Ratings";
 
 const SingleUserReview = ({ reviews }) => {
-  console.log(reviews);
   const {
     name,
     email,

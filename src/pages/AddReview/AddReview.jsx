@@ -1,9 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ReviewContext } from "../../Context/ReviewProvider";
+import Swal from "sweetalert2";
 
 const AddReview = () => {
-  const { serviceId, setAddedReview } = useContext(ReviewContext);
-  const handleReviewSubmit = (event)=>{
+  const [ defaultRatings, setDefaultRating ] = useState(0)
+  const [ err, setErr ] = useState();
+  const { serviceId, addedReview, setAddedReview } = useContext(ReviewContext);
+  
+  const handleCloseModal = () => document.getElementById("my_modal_4").close();
+  
+  const handleReviewSubmit = (event) =>{
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
@@ -13,7 +19,12 @@ const AddReview = () => {
     const reviewTitle = form.reviewTitle.value;
     const imageUrl = form.imageUrl.value;
     const reviewDescription = form.reviewDescription.value;
-    
+
+    if(ratings > 5 || ratings < 0){
+      setErr("Please input from 0 to 5")
+      return
+    }
+    setErr();
     const reviewData = { serviceId, name, email, occupation, ratings, reviewTitle, imageUrl, reviewDescription };
 
     const addReviewinDatabase = async()=>{
@@ -26,14 +37,22 @@ const AddReview = () => {
           body: JSON.stringify(reviewData)
         })
         const data = await response.json();
-        setAddedReview(true)
-      console.log(data);
+        setAddedReview(!addedReview);
+        if (data.acknowledged) {
+          Swal.fire("Successfully added review");
+          // handleCloseModal()
+        } else {
+          Swal.fire("Something went wrong in the server");
+          // handleCloseModal();
+        }
+        console.log(data);
       }catch(err){
         console.log(err)
+      }finally{
+        handleCloseModal();
       }
     }
     addReviewinDatabase()
-
     form.reset()
   }
   
@@ -90,12 +109,22 @@ const AddReview = () => {
                 <span className="label-text text-lg font-medium">Ratings</span>
               </div>
               <input
+                id="inputRating"
                 type="number"
                 name="rating"
-                placeholder="Type from 0.0 to 5.0"
-                pattern="[0.0-5.0]"
+                value={defaultRatings}
                 className="input input-bordered w-full"
+                onChange={(e) => setDefaultRating(e.target.value)}
               />
+              {err ? (
+                <div className="label">
+                  <span className="label-text text-lg font-medium text-red-500">
+                    {err}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
             </label>
 
             <label className="form-control w-full">
@@ -140,7 +169,12 @@ const AddReview = () => {
             </label>
           </div>
           <div className="flex items-center justify-end">
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              // onClick={() => document.getElementById("my_modal_4").close()}
+              // onClick={handleCloseModal}
+            >
               Submit
             </button>
           </div>

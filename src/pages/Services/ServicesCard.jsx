@@ -3,7 +3,6 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const Card = ({ item }) => {
   const { Title, img, description, _id, price } = item;
-  console.log(item);
   return (
     <PhotoProvider>
       <div className="card bg-base-100 w-full shadow-xl">
@@ -17,7 +16,7 @@ const Card = ({ item }) => {
           <p>{description}</p>
           <p className="font-medium text-xl">Price: ${price.toFixed(2)}</p>
           <div className="card-actions justify-end">
-            <Link to={`service-details/${_id}`}>
+            <Link to={`/service-details/${_id}`}>
               <button className="btn btn-primary">View details</button>
             </Link>
           </div>
