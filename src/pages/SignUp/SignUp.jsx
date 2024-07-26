@@ -7,7 +7,7 @@ import { AuthContext } from "../../Context/AuthProvider";
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [ err, setErr ] = useState();
-  const { createUserWithPassword } = useContext(AuthContext);
+  const { createUserWithPassword, updateUserInfo } = useContext(AuthContext);
   const handleCreateUserWithPass = (event) =>{
     event.preventDefault();
     const form = event.target;
@@ -18,6 +18,9 @@ const SignUp = () => {
     createUserWithPassword(email, password)
       .then(result =>{
         const user = result.user;
+        updateUserInfo({ displayName: name, photoURL: photoUrl })
+          .then(() => console.log("profile updated"))
+          .catch(err => console.log(err))
         setErr();
         form.reset()
         console.log(user);

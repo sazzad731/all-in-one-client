@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleSignin from "../../components/GoogleSignin";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { ReviewContext } from "../../Context/ReviewProvider";
 
 
 
@@ -12,8 +13,16 @@ const SignIn = () =>{
   const [ showPassword, setShowPassword ] = useState(false);
   const [ emailErr, setEmailErr ] = useState();
   const [ passErr, setPassErr ] = useState();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/"
+
   const { emailPasswordSignIn } = useContext(AuthContext);
-  const handleSignInEmailPassword = (event) =>{
+  const { setOpentModal } = useContext(ReviewContext);
+  
+  
+  const handleSignInEmailPassword = (event) =>
+  {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
@@ -26,6 +35,8 @@ const SignIn = () =>{
         setPassErr()
         form.reset();
         console.log(user)
+        navigate(from, { replace: true })
+        setOpentModal(true)
       })
       .catch(err =>{
         const errCode = err.code;

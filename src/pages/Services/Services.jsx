@@ -25,7 +25,7 @@ const Services = () => {
   }, [])
   return (
     <div className="px-3 md:px-0">
-      <h2 className="text-center font-semibold text-5xl mb-12">All Services</h2>
+      <h2 className="text-center font-semibold text-5xl mb-12">Services.</h2>
       {err ? (
         <p className="text-red-500 text-xl font-medium text-center py-10">
           Something went wrong! Please try again.

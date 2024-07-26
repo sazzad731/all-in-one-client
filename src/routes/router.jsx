@@ -5,6 +5,7 @@ import Services from "../pages/Services/Services";
 import ServiceDetails from "../pages/ServiceDetails/ServiceDetails";
 import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
+import PrivateRouter from "./PrivateRouter";
 
 export const router = createBrowserRouter([
   {
@@ -24,12 +25,16 @@ export const router = createBrowserRouter([
         element: <ServiceDetails />,
       },
       {
+        path: "/my-review",
+
+      },
+      {
         path: "/signin",
         element: <SignIn />,
       },
       {
         path: "/signup",
-        element: <SignUp/>
+        element: <SignUp />,
       },
     ],
   },
