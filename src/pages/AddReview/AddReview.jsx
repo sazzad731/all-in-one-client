@@ -6,7 +6,7 @@ import { AuthContext } from "../../Context/AuthProvider";
 const AddReview = () => {
   const [ defaultRatings, setDefaultRating ] = useState(0)
   const [ err, setErr ] = useState();
-  const { serviceId, addedReview, setAddedReview } = useContext(ReviewContext);
+  const { serviceInfo, addedReview, setAddedReview } = useContext(ReviewContext);
   const { user } = useContext(AuthContext);
   
   const handleCloseModal = () => document.getElementById("my_modal_4").close();
@@ -27,7 +27,11 @@ const AddReview = () => {
       return
     }
     setErr();
-    const reviewData = { serviceId, name, email, occupation, ratings, reviewTitle, imageUrl, reviewDescription };
+
+
+    const { Title, _id, img } = serviceInfo;
+
+    const reviewData = { serviceId: _id, serviceTitle: Title, serviceImage: img, name, email, occupation, ratings, reviewTitle, imageUrl, reviewDescription };
 
     const addReviewinDatabase = async()=>{
       try{

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import Reviews from "./Reviews/Reviews";
-import Ratings from "./Ratings/Ratings";
+import Ratings from "../../components/Ratings/Ratings";
 import { ReviewContext } from "../../Context/ReviewProvider";
 
 const ServiceDetails = () => {
@@ -10,11 +10,10 @@ const ServiceDetails = () => {
   const [ serviceDetail, setServiceDetail ] = useState({});
   const [ error, setError ] = useState();
   const [ isLoading, setLoading ] = useState(false);
-  const { reviews, setReview, setServiceId, addedReview } = useContext(ReviewContext);
+  const { reviews, setReview, setServiceInfo, addedReview } = useContext(ReviewContext);
   useEffect(()=>{
     // Get selected Service Detail
-    const fetchedService = async () =>
-    {
+    const fetchedService = async () =>{
       setLoading(true);
       try{
         const response = await fetch(
@@ -41,7 +40,7 @@ const ServiceDetails = () => {
         const response = await fetch(`http://localhost:3000/getReview/${id}`);
         const data = await response.json();
         setReview(data);
-        setServiceId(id);
+        setServiceInfo(serviceDetail);
       } catch (err) {
         console.log(err);
       } finally {
@@ -49,7 +48,7 @@ const ServiceDetails = () => {
       }
     };
     fetchedReviews();
-  }, [id, setServiceId, setReview, addedReview]);
+  }, [id, setServiceInfo, setReview, addedReview, serviceDetail]);
 
   const { Title, about, img, price, facilities } = serviceDetail;
 

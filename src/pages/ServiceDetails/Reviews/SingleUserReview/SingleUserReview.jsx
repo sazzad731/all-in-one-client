@@ -1,4 +1,4 @@
-import Ratings from "../../Ratings/Ratings";
+import Ratings from "../../../../components/Ratings/Ratings";
 
 const SingleUserReview = ({ reviews }) => {
   const {

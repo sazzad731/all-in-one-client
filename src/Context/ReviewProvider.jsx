@@ -4,16 +4,16 @@ export const ReviewContext = createContext();
 
 const ReviewProvider = ({children}) =>{
   const [ reviews, setReview ] = useState([]);
-  const [ serviceId, setServiceId ] = useState("");
+  const [ serviceInfo, setServiceInfo ] = useState({});
   const [ addedReview, setAddedReview ] = useState(false);
-  const [OpenModal, setOpenModal] = useState(false)
+  const [ OpenModal, setOpenModal ] = useState(false)
   const reviewInfo = {
     addedReview,
     setAddedReview,
     reviews,
     setReview,
-    serviceId,
-    setServiceId,
+    serviceInfo,
+    setServiceInfo,
     OpenModal,
     setOpenModal,
   };
