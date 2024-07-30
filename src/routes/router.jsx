@@ -7,6 +7,7 @@ import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
 import PrivateRouter from "./PrivateRouter";
 import MyReview from "../pages/MyReview/MyReview";
+import EditReview from "../pages/MyReview/EditReview/EditReview";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ export const router = createBrowserRouter([
             <MyReview />
           </PrivateRouter>
         ),
+      },
+      {
+        path: "/edit-review/:id",
+        element: <PrivateRouter><EditReview /></PrivateRouter>,
+        loader: ({params})=> fetch(`http://localhost:3000/oneReview/${params.id}`)
       },
       {
         path: "/signin",

@@ -2,24 +2,49 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
 import Ratings from "../../components/Ratings/Ratings";
 import { FaPen, FaRegTrashCan } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const MyReview = () => {
   const [myReview, setMyReview] = useState([])
   const { user } = useContext(AuthContext);
   
-  useEffect(() =>{
-    const fetchMyReviews = async()=>{
-      try{
-        const response = await fetch(`http://localhost:3000/my-reviews?email=${user?.email}`);
+  useEffect(() => {
+    const fetchMyReviews = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/my-reviews?email=${user?.email}`
+        );
         const data = await response.json();
         setMyReview(data);
         console.log(data);
-      }catch(err){
+      } catch (err) {
         console.log(err);
       }
-    }
-    fetchMyReviews()
-  }, [ user?.email ])
+    };
+    fetchMyReviews();
+  }, [user?.email]);
+
+  const handleDelete = (id)=>{
+    fetch(`http://localhost:3000/my-reviews/${id}`, {
+      method: "DELETE"
+    })
+      .then(() =>{
+        Swal.fire({
+          title: "Successfully deleted",
+          icon: "success",
+        });
+        const remaining = myReview.filter((item) => item._id !== id);
+        setMyReview(remaining);
+      })
+      .catch(err => {
+        Swal.fire({
+          title: `${err}`,
+          icon: "error",
+        });
+      })
+  }
+
   return (
     <div>
       <table className="table">
@@ -59,13 +84,14 @@ const MyReview = () => {
               </td>
               <td className="w-[9.5rem]">
                 <div className="flex items-center justify-between">
-                  <button
+                  <Link
+                    to={`/edit-review/${item._id}`}
                     className="btn text-lg"
-                    onClick={document.getElementById("my_modal_4").showModal()}
+                    onClick={()=>document.getElementById("my_modal_4")?.showModal()}
                   >
                     <FaPen />
-                  </button>
-                  <button className="btn text-lg text-red-500">
+                  </Link>
+                  <button onClick={()=>handleDelete(item._id)} className="btn text-lg text-red-500">
                     <FaRegTrashCan />
                   </button>
                 </div>

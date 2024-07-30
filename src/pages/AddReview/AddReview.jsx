@@ -52,7 +52,6 @@ const AddReview = () => {
         } else {
           Swal.fire("Something went wrong in the server");
         }
-        console.log(data);
       }catch(err){
         console.log(err)
       }finally{
