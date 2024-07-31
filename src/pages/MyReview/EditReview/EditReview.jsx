@@ -1,21 +1,65 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const EditReview = () =>{
+const EditReview = () => {
   const review = useLoaderData();
-  const [occupation, setOccupation] = useState(review?.occupation);
-  const [rating, setRating] = useState(review.ratings);
-  const [reviewTitle, setTitle] = useState(review.reviewTitle);
-  const [description, setDescription] = useState(review.reviewDescription);
-  const [err, setErr] = useState();
+  const [ err, setErr ] = useState();
 
-  
-  console.log(review);
+  const handleSaveReview = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const occupation = form.occupation.value;
+    const ratings = form.rating.value;
+    const reviewTitle = form.reviewTitle.value;
+    const reviewDescription = form.reviewDescription.value;
+
+    const updatedReview = {
+      occupation,
+      ratings,
+      reviewTitle,
+      reviewDescription,
+    };
+
+    if (ratings > 5 || ratings < 0) {
+      setErr("Please input from 0 to 5");
+      return;
+    }
+    setErr();
+
+    const updateReview = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/edit-review/${review._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedReview),
+          }
+        );
+        const data = await response.json();
+        if(data.modifiedCount === 1){
+          Swal.fire({
+            title: "Successfully updated",
+            icon: "success",
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          title: `${err}`,
+          icon: "error",
+        });
+      }
+    };
+    updateReview();
+  };
   return (
     <div className="w-full max-w-3xl mx-auto h-screen">
       <div>
         <h3 className="font-bold text-xl text-center mb-10">Edit Review</h3>
-        <form>
+        <form onSubmit={handleSaveReview}>
           <div className="">
             <label className="form-control w-full">
               <div className="label">
@@ -27,9 +71,8 @@ const EditReview = () =>{
                 type="text"
                 name="occupation"
                 placeholder="Type here"
-                value={occupation}
+                defaultValue={review.occupation}
                 className="input input-bordered w-full"
-                onChange={(e) => setOccupation(e.target.value)}
               />
             </label>
 
@@ -41,9 +84,8 @@ const EditReview = () =>{
                 id="inputRating"
                 type="number"
                 name="rating"
-                value={rating}
+                defaultValue={review.ratings}
                 className="input input-bordered w-full"
-                onChange={(e) => setRating(e.target.value)}
               />
               {err ? (
                 <div className="label">
@@ -65,10 +107,9 @@ const EditReview = () =>{
               <input
                 type="text"
                 name="reviewTitle"
-                value={reviewTitle}
+                defaultValue={review.reviewTitle}
                 placeholder="Type here"
                 className="input input-bordered w-full"
-                onChange={(e) => setTitle(e.target.value)}
               />
             </label>
 
@@ -81,9 +122,8 @@ const EditReview = () =>{
               <textarea
                 className="textarea textarea-bordered h-24"
                 name="reviewDescription"
-                value={description}
+                defaultValue={review.reviewDescription}
                 placeholder="Add your message"
-                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </label>
           </div>

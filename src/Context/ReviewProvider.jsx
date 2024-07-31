@@ -7,6 +7,7 @@ const ReviewProvider = ({children}) =>{
   const [ serviceInfo, setServiceInfo ] = useState({});
   const [ addedReview, setAddedReview ] = useState(false);
   const [ OpenModal, setOpenModal ] = useState(false)
+  const [editedReview, setEditedReview] = useState(false);
   const reviewInfo = {
     addedReview,
     setAddedReview,
@@ -16,6 +17,8 @@ const ReviewProvider = ({children}) =>{
     setServiceInfo,
     OpenModal,
     setOpenModal,
+    editedReview,
+    setEditedReview,
   };
   return (
     <ReviewContext.Provider value={reviewInfo}>{children}</ReviewContext.Provider>

@@ -17,6 +17,8 @@ const SignIn = () =>{
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/"
 
+  console.log(location.state);
+
   const { emailPasswordSignIn } = useContext(AuthContext);
   const { setOpentModal } = useContext(ReviewContext);
   
@@ -34,7 +36,6 @@ const SignIn = () =>{
         setEmailErr()
         setPassErr()
         form.reset();
-        console.log(user)
         navigate(from, { replace: true })
         setOpentModal(true)
       })

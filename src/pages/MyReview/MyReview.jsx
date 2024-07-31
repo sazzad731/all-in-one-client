@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const MyReview = () => {
-  const [myReview, setMyReview] = useState([])
+  const [ myReview, setMyReview ] = useState([]);
   const { user } = useContext(AuthContext);
-  
   useEffect(() => {
     const fetchMyReviews = async () => {
       try {
@@ -17,7 +16,6 @@ const MyReview = () => {
         );
         const data = await response.json();
         setMyReview(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }

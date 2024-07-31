@@ -26,10 +26,10 @@ const Header = () => {
       {user ? (
         <>
           <li className="font-medium text-lg">
-            <Link to="my-review">My reviews</Link>
+            <Link to="/myReview">My reviews</Link>
           </li>
           <li className="font-medium text-lg">
-            <Link to="add-service">Add service</Link>
+            <Link to="/add-service">Add service</Link>
           </li>
         </>
       ) : (
