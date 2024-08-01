@@ -29,7 +29,7 @@ const Header = () => {
             <Link to="/myReview">My reviews</Link>
           </li>
           <li className="font-medium text-lg">
-            <Link to="/add-service">Add service</Link>
+            <Link to="/add-service">Add services</Link>
           </li>
         </>
       ) : (

@@ -44,60 +44,69 @@ const MyReview = () => {
   }
 
   return (
-    <div>
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr className="text-lg text-black">
-            <th>Services</th>
-            <th>Reviews</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myReview.map((item) => (
-            <tr key={item._id}>
-              <td className="w-1/5">
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="mask mask-square rounded-md w-full">
-                      <img
-                        src={item.serviceImage}
-                        alt="Avatar Tailwind CSS Component"
-                      />
+    <div className="min-h-screen mb-14">
+      {myReview.length === 0 ? (
+        <h3 className="text-center text-2xl font-medium">No reviews were added</h3>
+      ) : (
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr className="text-lg text-black">
+              <th>Services</th>
+              <th>Reviews</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myReview.map((item) => (
+              <tr key={item._id}>
+                <td className="w-1/5">
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <div className="mask mask-square rounded-md w-full">
+                        <img
+                          src={item.serviceImage}
+                          alt="Avatar Tailwind CSS Component"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      {/* service title */}
+                      <h5 className="font-bold text-xl">{item.serviceTitle}</h5>
                     </div>
                   </div>
-                  <div>
-                    {/* service title */}
-                    <h5 className="font-bold text-xl">{item.serviceTitle}</h5>
+                </td>
+                <td>
+                  {/* <Ratings ratings={ratings} /> */}
+                  <Ratings ratings={item.ratings} />
+                  <h5 className="font-bold text-xl">{item.reviewTitle}</h5>
+                  <p className="text-lg text-gray-500 font-medium">
+                    {item.reviewDescription}
+                  </p>
+                </td>
+                <td className="w-[9.5rem]">
+                  <div className="flex items-center justify-between">
+                    <Link
+                      to={`/edit-review/${item._id}`}
+                      className="btn text-lg"
+                      onClick={() =>
+                        document.getElementById("my_modal_4")?.showModal()
+                      }
+                    >
+                      <FaPen />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="btn text-lg text-red-500"
+                    >
+                      <FaRegTrashCan />
+                    </button>
                   </div>
-                </div>
-              </td>
-              <td>
-                {/* <Ratings ratings={ratings} /> */}
-                <Ratings ratings={item.ratings} />
-                <h5 className="font-bold text-xl">{item.reviewTitle}</h5>
-                <p className="text-lg text-gray-500 font-medium">
-                  {item.reviewDescription}
-                </p>
-              </td>
-              <td className="w-[9.5rem]">
-                <div className="flex items-center justify-between">
-                  <Link
-                    to={`/edit-review/${item._id}`}
-                    className="btn text-lg"
-                    onClick={()=>document.getElementById("my_modal_4")?.showModal()}
-                  >
-                    <FaPen />
-                  </Link>
-                  <button onClick={()=>handleDelete(item._id)} className="btn text-lg text-red-500">
-                    <FaRegTrashCan />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

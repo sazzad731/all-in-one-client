@@ -8,6 +8,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import PrivateRouter from "./PrivateRouter";
 import MyReview from "../pages/MyReview/MyReview";
 import EditReview from "../pages/MyReview/EditReview/EditReview";
+import AddServices from "../pages/AddServices/AddServices";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
         element: <ServiceDetails />,
       },
       {
+        path: "/add-service",
+        element: <PrivateRouter><AddServices/></PrivateRouter>
+      },
+      {
         path: "/myReview",
         element: (
           <PrivateRouter>
@@ -36,8 +41,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "/edit-review/:id",
-        element: <PrivateRouter><EditReview /></PrivateRouter>,
-        loader: ({params})=> fetch(`http://localhost:3000/oneReview/${params.id}`)
+        element: (
+          <PrivateRouter>
+            <EditReview />
+          </PrivateRouter>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/oneReview/${params.id}`),
       },
       {
         path: "/signin",
