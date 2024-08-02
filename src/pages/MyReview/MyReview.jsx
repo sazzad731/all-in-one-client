@@ -4,9 +4,12 @@ import Ratings from "../../components/Ratings/Ratings";
 import { FaPen, FaRegTrashCan } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import Loading from "../../components/Loading";
 
 const MyReview = () => {
-  const [ myReview, setMyReview ] = useState([]);
+  const [myReview, setMyReview] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [err, setError] = useState();
   const { user } = useContext(AuthContext);
   useEffect(() => {
     const fetchMyReviews = async () => {
@@ -16,18 +19,19 @@ const MyReview = () => {
         );
         const data = await response.json();
         setMyReview(data);
+        setLoading(false);
       } catch (err) {
-        console.log(err);
+        setError(err);
       }
     };
     fetchMyReviews();
   }, [user?.email]);
 
-  const handleDelete = (id)=>{
+  const handleDelete = (id) => {
     fetch(`http://localhost:3000/my-reviews/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     })
-      .then(() =>{
+      .then(() => {
         Swal.fire({
           title: "Successfully deleted",
           icon: "success",
@@ -35,18 +39,25 @@ const MyReview = () => {
         const remaining = myReview.filter((item) => item._id !== id);
         setMyReview(remaining);
       })
-      .catch(err => {
+      .catch((err) => {
         Swal.fire({
           title: `${err}`,
           icon: "error",
         });
-      })
-  }
+      });
+  };
 
   return (
     <div className="min-h-screen mb-14">
-      {myReview.length === 0 ? (
-        <h3 className="text-center text-2xl font-medium">No reviews were added</h3>
+      {/* If there is loading then show the Loading component else if there is an error then show the error else if it shows data*/}
+      {isLoading ? (
+        <Loading />
+      ) : err ? (
+        <h3 className="text-center text-2xl font-medium text-red-500">{err}</h3>
+      ) : myReview.length === 0 ? (
+        <h3 className="text-center text-2xl font-medium">
+          No reviews were added
+        </h3>
       ) : (
         <table className="table">
           {/* head */}
@@ -76,7 +87,6 @@ const MyReview = () => {
                   </div>
                 </td>
                 <td>
-                  {/* <Ratings ratings={ratings} /> */}
                   <Ratings ratings={item.ratings} />
                   <h5 className="font-bold text-xl">{item.reviewTitle}</h5>
                   <p className="text-lg text-gray-500 font-medium">
