@@ -13,15 +13,17 @@ const MyReview = () => {
   const { user } = useContext(AuthContext);
   useEffect(() => {
     const fetchMyReviews = async () => {
+      setLoading(true)
       try {
         const response = await fetch(
           `http://localhost:3000/my-reviews?email=${user?.email}`
         );
         const data = await response.json();
         setMyReview(data);
-        setLoading(false);
       } catch (err) {
         setError(err);
+      }finally{
+        setLoading(false);
       }
     };
     fetchMyReviews();
