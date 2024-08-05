@@ -7,7 +7,9 @@ const Services = () => {
   const [ loading, setLoading ] = useState(false);
   const [ err, setErr ] = useState();
   useEffect(()=>{
-    const fetchServices = async()=>{
+    document.title = "Services";
+    const fetchServices = async () =>
+    {
       setLoading(true)
 
       try{

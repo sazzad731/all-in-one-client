@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Swal from "sweetalert2";
 
 const AddServices = () => {
@@ -48,6 +49,9 @@ const AddServices = () => {
     }
     addServiceInDatabase()
   }
+  useEffect(()=>{
+    document.title = "Add Service";
+  }, [])
   
   
   return (

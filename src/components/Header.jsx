@@ -21,7 +21,7 @@ const Header = () => {
         <Link to="/services">Services</Link>
       </li>
       <li className="font-medium text-lg">
-        <a href="#faq">FAQ</a>
+        <Link to="/blog">Blog</Link>
       </li>
       {user ? (
         <>
@@ -33,7 +33,7 @@ const Header = () => {
           </li>
         </>
       ) : (
-        ""
+        <></>
       )}
     </>
   );

@@ -12,7 +12,8 @@ const MyReview = () => {
   const [err, setError] = useState();
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    const fetchMyReviews = async () => {
+    document.title = "My Reviews";
+    const fetchMyReviews = async () =>{
       setLoading(true)
       try {
         const response = await fetch(

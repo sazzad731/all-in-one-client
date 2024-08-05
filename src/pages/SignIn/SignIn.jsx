@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleSignin from "../../components/GoogleSignin";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { ReviewContext } from "../../Context/ReviewProvider";
@@ -52,7 +52,10 @@ const SignIn = () =>{
         console.log(errCode, errMessage)
       })
   }
-  
+  useEffect(()=>{
+    document.title = "Sign in";
+  }, [])
+
   return (
     <div className="h-screen">
       <h2 className="text-4xl font-semibold text-center mb-10">Sign in</h2>
