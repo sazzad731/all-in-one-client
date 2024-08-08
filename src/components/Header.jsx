@@ -2,14 +2,31 @@ import { Link } from "react-router-dom";
 import logo from "../assets/image/logo.png";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
+import Swal from "sweetalert2";
 
 const Header = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut, deleteAccount } = useContext(AuthContext);
 
   const handleLogOut = () => {
     logOut()
       .then(() => console.log("Log out successfull"))
       .catch((err) => console.log(err));
+  };
+
+  const handleDeleteAccount = () => {
+    deleteAccount()
+      .then(() => {
+        Swal.fire({
+          title: "Deleted Account successfull",
+          icon: "success",
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: err,
+          icon: "error",
+        });
+      });
   };
 
   const navItem = (
@@ -138,14 +155,32 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <details>
+                    <summary>
+                      <a className="justify-between">Settings</a>
+                    </summary>
+                    <ul>
+                      <li>
+                        <a
+                          onClick={handleDeleteAccount}
+                          className="text-red-500"
+                        >
+                          Delete accoount
+                        </a>
+                      </li>
+                    </ul>
+                  </details>
                 </li>
                 <li>
                   <a onClick={handleLogOut}>Logout</a>
                 </li>
               </ul>
             </div>
-          ) : (<Link to="/signin" className="btn">Sign in</Link>)}
+          ) : (
+            <Link to="/signin" className="btn">
+              Sign in
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
   onAuthStateChanged,
   signOut,
   updateProfile,
+  deleteUser,
 } from "firebase/auth";
 
 const auth = getAuth(app)
@@ -21,6 +22,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({children}) => {
   const [ user, setUser ] = useState(null);
   const [ isLoading, setLoading ] = useState(true);
+  const currentUser = auth.currentUser;
   
   const createUserWithPassword = (email, password) => {
     setLoading(true);
@@ -45,6 +47,10 @@ const AuthProvider = ({children}) => {
     return signOut(auth);
   }
 
+  const deleteAccount = ()=>{
+    return deleteUser(currentUser);
+  }
+
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
       setUser(currentUser);
@@ -62,6 +68,7 @@ const AuthProvider = ({children}) => {
     createUserWithPassword,
     updateUserInfo,
     logOut,
+    deleteAccount,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
