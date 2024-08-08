@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { ReviewContext } from "../../Context/ReviewProvider";
+import Swal from "sweetalert2";
 
 
 
@@ -17,14 +18,11 @@ const SignIn = () =>{
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/"
 
-  console.log(location.state);
-
   const { emailPasswordSignIn } = useContext(AuthContext);
-  const { setOpentModal } = useContext(ReviewContext);
+  const { setOpenModal } = useContext(ReviewContext);
   
   
-  const handleSignInEmailPassword = (event) =>
-  {
+  const handleSignInEmailPassword = (event) =>{
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
@@ -35,9 +33,29 @@ const SignIn = () =>{
         const user = result.user;
         setEmailErr()
         setPassErr()
-        form.reset();
-        navigate(from, { replace: true })
-        setOpentModal(true)
+
+        const currentUser = {
+          email: user.email
+        }
+
+        // get jwt token
+        fetch("http://localhost:3000/jwt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentUser),
+        })
+          .then(res => res.json())
+          .then(data => {
+            localStorage.setItem('token', data.token);
+            Swal.fire({
+              title: "Login successful",
+              icon: "success"
+            })
+            navigate(from, { replace: true })
+            setOpenModal(true)
+          })
       })
       .catch(err =>{
         const errCode = err.code;

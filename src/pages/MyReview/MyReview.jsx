@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
 import Ratings from "../../components/Ratings/Ratings";
 import { FaPen, FaRegTrashCan } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loading";
 
@@ -10,25 +10,35 @@ const MyReview = () => {
   const [myReview, setMyReview] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [err, setError] = useState();
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
   useEffect(() => {
     document.title = "My Reviews";
-    const fetchMyReviews = async () =>{
-      setLoading(true)
+    const fetchMyReviews = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:3000/my-reviews?email=${user?.email}`
+          `http://localhost:3000/my-reviews?email=${user?.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
-        const data = await response.json();
-        setMyReview(data);
+        if(response.status === 401 || response.status === 403){
+          logOut()
+        }else{
+          const data = await response.json();
+          setMyReview(data);
+        }
       } catch (err) {
         setError(err);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
     fetchMyReviews();
-  }, [user?.email]);
+  }, [user?.email, logOut, navigate]);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:3000/my-reviews/${id}`, {
